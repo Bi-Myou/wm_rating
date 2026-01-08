@@ -1,0 +1,52 @@
+name: 微妙哥評分監視
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 每 30 分鐘執行一次
+    - cron: '*/30 * * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    env:
+      TZ: Asia/Taipei
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Run script
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          BOT_TOKEN_WM: ${{ secrets.BOT_TOKEN_WM }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          WM_ACCOUNT: ${{ secrets.WM_ACCOUNT }}
+        run: |
+          python wm_rating.py
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          # 檢查 wm_rating.txt 是否有變動
+          if [[ -n $(git status -s wm_rating.txt) ]]; then
+            git add wm_rating.txt
+            git commit -m "[Actions] Auto update"
+            git push
+          else
+            echo "No changes to commit"
+          fi
