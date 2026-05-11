@@ -45,7 +45,7 @@ def get_api(userId):
         send_data = f"<a href='https://wall.gamer.com.tw/user.php?userId={p_id}'>{p_name}</a>\n評價了\n<a href='https://wall.gamer.com.tw/fanpage.php?sn={r_id}'>{r_name}({r_type})</a> {r_rating}分\n<blockquote>{content}</blockquote>\n——————————\n#微妙哥\n<blockquote>時間： {ctime}\n貼文： <a href='https://wall.gamer.com.tw/post.php?sn={a_id}'>{a_id}</a></blockquote>"
         # print(send_data)
         # print("---------------------------------\n")
-        rtn = send_tg_message(CHAT_ID, "192", send_data)
+        rtn = send_tg_message(CHAT_ID, "", send_data)
         if rtn:
             with open(DATA_FILE, "a", encoding="utf-8") as f:
                 f.write(f"{a_id}\n")
@@ -59,7 +59,7 @@ def send_tg_message(chat_id, thread_id, text, parse_mode="HTML", retry=0):
     url = f"{API_BASE_URL}/bot{BotTokenWM}/sendMessage"
     data = {
         "chat_id": chat_id,
-        "message_thread_id": thread_id,
+        # "message_thread_id": thread_id,
         "text": text,
         "parse_mode": parse_mode,
         "disable_web_page_preview": True,
