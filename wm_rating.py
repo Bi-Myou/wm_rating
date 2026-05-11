@@ -12,7 +12,8 @@ if not os.path.exists(DATA_FILE):
         f.write("")
 
 BotTokenWM = os.environ.get("BOT_TOKEN_WM")
-API_BASE_URL = os.environ.get("API_BASE_URL", "https://api.telegram.org")
+# API_BASE_URL = os.environ.get("API_BASE_URL", "https://api.telegram.org")
+API_BASE_URL = "https://api.telegram.org"
 CHAT_ID = os.environ.get("TG_CHAT_ID")
 WM_ACCOUNT = os.environ.get("WM_ACCOUNT")
 
